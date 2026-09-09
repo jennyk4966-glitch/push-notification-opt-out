@@ -6,196 +6,163 @@
 <title>광고성 앱푸시 수신거부 처리 로직 - Interactive Spec</title>
 <style>
 :root{
-  --bg:#f4f5f7; --panel:#fff; --text:#1f2329; --muted:#6f7682; --line:#e3e6ea;
-  --brand:#512b87; --brand2:#6b45a8; --blue:#4f7fe8; --green:#16865a; --red:#d64b4b;
-  --chip:#f2edfb; --shadow:0 12px 36px rgba(25,29,35,.08);
+  --bg:#f5f6f8;
+  --panel:#ffffff;
+  --text:#1e232b;
+  --muted:#66707d;
+  --line:#dfe3e8;
+  --navy:#1d2a3a;
+  --navy2:#31455f;
+  --soft:#f1f3f6;
+  --green:#1f7a55;
+  --red:#b54747;
+  --amber:#9a6a08;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0; background:var(--bg); color:var(--text);
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Malgun Gothic",Arial,sans-serif;
-  line-height:1.6;
+  line-height:1.55;
 }
-.layout{display:grid; grid-template-columns:250px minmax(0,1fr); min-height:100vh}
+.layout{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
 aside{
-  position:sticky; top:0; height:100vh; overflow:auto; padding:26px 18px;
-  background:#191423; color:#fff;
+  position:sticky;top:0;height:100vh;overflow:auto;
+  padding:24px 16px;background:var(--navy);color:#fff;
 }
-.logo{font-weight:900;font-size:19px;margin-bottom:5px}
-.ver{font-size:12px;color:#bbb4c8;margin-bottom:22px}
+.logo{font-size:18px;font-weight:900;margin-bottom:4px}
+.ver{font-size:12px;color:#aeb8c5;margin-bottom:20px}
 aside a{
-  display:flex;align-items:center;gap:8px;text-decoration:none;color:#d7d1df;
-  padding:9px 10px;border-radius:9px;font-size:13px;margin:3px 0;
-  border-left:3px solid transparent;transition:.18s ease;
+  display:block;text-decoration:none;color:#cfd6df;
+  padding:9px 10px;margin:2px 0;border-radius:6px;font-size:13px;
+  border-left:2px solid transparent;
 }
-aside a:hover{background:#2a2139;color:#fff}
-aside a.active{
-  background:#3a2b52;color:#fff;border-left-color:#9f7ce0;font-weight:900;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)
-}
-main{padding:34px 42px 72px; max-width:1440px; width:100%; margin:0 auto}
+aside a:hover{background:#26364b;color:#fff}
+aside a.active{background:#2b3c52;color:#fff;border-left-color:#d7dee8;font-weight:800}
+main{padding:30px 38px 60px;max-width:1380px;width:100%;margin:0 auto}
 .hero{
-  background:linear-gradient(135deg,#fff,#f4effd); border:1px solid #e5dcf4;
-  border-radius:22px; padding:30px 32px; box-shadow:var(--shadow); margin-bottom:20px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:26px 28px;margin-bottom:18px;
 }
-.eyebrow{font-size:12px;font-weight:900;color:var(--brand);letter-spacing:.06em}
-h1{font-size:30px;line-height:1.25;margin:7px 0 10px}
+.eyebrow{font-size:11px;font-weight:900;color:var(--navy2);letter-spacing:.08em}
+h1{font-size:29px;line-height:1.25;margin:6px 0 8px}
+.hero-summary{font-size:14px;color:var(--muted);font-weight:650}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.meta div{border:1px solid var(--line);background:#fafbfc;border-radius:8px;padding:10px 12px;font-size:13px}
+.meta b{display:block;font-size:11px;color:#7a8490;margin-bottom:2px}
+section{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:24px 26px;margin:18px 0;scroll-margin-top:16px;
+}
 h2{
-  font-size:22px;margin:0 0 20px;padding:14px 16px;
-  background:linear-gradient(90deg,#f4effd 0%,#fbf9fe 100%);
-  border-left:6px solid var(--brand);
-  border-radius:12px;
-  line-height:1.25;
+  font-size:21px;margin:0 0 18px;padding:0 0 11px;
+  border-bottom:2px solid var(--navy);line-height:1.25;
 }
 h3{
-  font-size:17px;margin:24px 0 11px;padding:0 0 8px 12px;
-  border-left:4px solid #b8a4da;border-bottom:1px solid #ece8f3;
-  color:#332746;
+  font-size:16px;margin:21px 0 9px;color:var(--navy);
 }
-section > h2:first-child{
-  position:relative;
-}
-
-p{margin:8px 0}
-.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
-.meta div{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px}
-.meta b{display:block;font-size:11px;color:#858b94;margin-bottom:3px}
-section{
-  background:var(--panel); border:1px solid var(--line); border-radius:18px;
-  padding:26px 28px; margin:20px 0 24px;
-  box-shadow:0 6px 20px rgba(25,29,35,.035);
-  scroll-margin-top:18px;
-}
-.note{border-left:4px solid var(--brand);background:#f7f3fd;padding:13px 15px;border-radius:9px;margin:13px 0}
-.warn{border-left-color:#c98c00;background:#fff7de}
+ul{margin:7px 0 0 19px;padding:0}
+li{margin:5px 0}
 .small{font-size:12px;color:var(--muted)}
-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
-th,td{padding:12px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
-th:last-child,td:last-child{border-right:none}
-tr:last-child td{border-bottom:none}
-th{background:#fafbfc;font-weight:800}
-.flow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.step{background:#fafafa;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:13px;font-weight:750}
-.step.on{background:#f3edfb;border-color:#d9cbed;color:#4a2d78}
-.step.ok{background:#eef8f3;border-color:#cde7db;color:#226e4d}
-.arrow{color:#9ba1aa;font-weight:900}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fcfcfd}
-ul{margin:8px 0 0 20px}
-blockquote{margin:8px 0;padding:0 0 0 14px;border-left:3px solid #d8dce2;color:#444}
-.interactive-section{
-  border-color:#d7c8ef;
-  box-shadow:0 10px 28px rgba(81,43,135,.07);
+.note{
+  border-left:3px solid var(--navy2);background:#f3f5f8;
+  padding:11px 13px;border-radius:5px;margin:12px 0;font-size:13px;
 }
-.interactive-section > h2{
-  background:linear-gradient(90deg,#eee5fb 0%,#f8f3ff 100%);
-  border-left-color:#6d45a5;
-}
+.note.warn{border-left-color:#b07a16;background:#fff8e8}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{border:1px solid var(--line);border-radius:9px;padding:15px;background:#fbfcfd}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:9px}
+th,td{padding:10px 11px;border:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#f3f5f7;font-weight:800;color:#303844}
+.flow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0 4px}
+.step{background:#f7f8fa;border:1px solid var(--line);border-radius:7px;padding:9px 10px;font-size:12.5px;font-weight:750}
+.step.em{background:#eef1f5;border-color:#bfc8d3;color:#26384d}
+.step.ok{background:#eef7f2;border-color:#c9e0d4;color:#246346}
+.step.bad{background:#fff2f2;border-color:#e2baba;color:#9e3d3d}
+.arrow{color:#9099a5;font-weight:900}
+.keyline{font-size:13px;font-weight:800;color:var(--navy);margin:10px 0 4px}
 
-.demo-shell{
-  display:grid;grid-template-columns:minmax(360px, 480px) minmax(0,1fr);gap:24px;align-items:start;
-}
-.controls{
-  border:1px solid var(--line); border-radius:15px; padding:16px; background:#fafbfc;
-}
-.controls .row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin:9px 0}
-label{font-size:13px;font-weight:800;color:#4d535c}
-select,button{
-  font:inherit;
-}
-select{
-  width:100%;padding:10px 11px;border:1px solid #d9dde3;border-radius:9px;background:#fff;color:#2b3037;
-}
-.btn{
-  border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer;
-}
-.btn.primary{background:var(--brand);color:#fff}
-.btn.secondary{background:#eceff3;color:#333}
-.btn.ghost{background:#fff;border:1px solid var(--line);color:#333}
-.btn:active{transform:translateY(1px)}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.status-box{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}
-.status-line{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px dashed #e5e7eb;font-size:13px}
+.interactive-section{border-color:#cfd5dd}
+.interactive-section h2{border-bottom-color:#53657b}
+.demo-shell{display:grid;grid-template-columns:minmax(340px,460px) minmax(0,1fr);gap:22px;align-items:start}
+.controls{border:1px solid var(--line);border-radius:10px;padding:15px;background:#f8f9fb}
+.controls .row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin:8px 0}
+label{font-size:13px;font-weight:800;color:#434c58}
+select,button{font:inherit}
+select{width:100%;padding:9px 10px;border:1px solid #cfd5dc;border-radius:7px;background:#fff;color:#252b33}
+.btn{border:0;border-radius:7px;padding:10px 13px;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.secondary{background:#e8ebef;color:#2e3742}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.status-box{margin-top:13px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:11px}
+.status-line{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid #eceff2;font-size:13px}
 .status-line:last-child{border-bottom:none}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:900}
-.badge.y{background:#e9f7ef;color:#147345}.badge.n{background:#fdecec;color:#b63d3d}.badge.na{background:#f0f1f3;color:#6d727a}
+.badge.y{background:#e9f5ee;color:#256b4b}
+.badge.n{background:#f9eaea;color:#a13f3f}
+.badge.na{background:#eceff2;color:#666f7a}
+.state{font-size:12px;font-weight:850}
 
 .phone-wrap{display:flex;justify-content:center}
 .phone{
-  width:390px;max-width:100%;height:780px;border-radius:34px;border:10px solid #121417;background:#fff;overflow:hidden;
-  box-shadow:0 24px 50px rgba(0,0,0,.18);position:relative;
+  width:390px;max-width:100%;height:760px;border-radius:30px;border:9px solid #15191e;background:#fff;overflow:hidden;
+  box-shadow:0 18px 40px rgba(0,0,0,.14);position:relative;
 }
 .phone-top{height:28px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:800}
-.app-head{height:74px;background:#fff;border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
-.app-head .hmark{font-weight:1000;color:var(--brand);font-size:24px}
-.app-head .icons{font-size:24px;letter-spacing:5px}
-.nav{height:50px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-around;font-weight:800}
-.nav .active{color:var(--brand);position:relative}
-.nav .active:after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-14px;width:28px;height:4px;background:var(--brand);border-radius:99px}
-.content{height:calc(100% - 152px);overflow:auto;background:#f7f7f8;padding:16px}
-.banner{height:170px;border-radius:18px;background:linear-gradient(135deg,#24213b,#9a7dc2);color:#fff;padding:22px;font-size:23px;font-weight:900;position:relative}
-.banner small{display:block;margin-top:12px;font-size:13px;font-weight:600;opacity:.82}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.mini{height:108px;border-radius:14px;background:#fff;border:1px solid #eceef1;padding:13px;font-size:13px;font-weight:800}
-.resv{background:#fff;border-radius:14px;padding:15px;border:1px solid #eceef1}
-.resv h4{margin:0 0 10px}
-.field{height:44px;border:1px solid #dadde2;border-radius:8px;margin:8px 0;padding:10px;color:#777;background:#fff}
-.setting{background:#fff;border-radius:14px;padding:14px;border:1px solid #eceef1}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-bottom:1px solid #eee}
+.app-head{height:68px;background:#fff;border-bottom:1px solid #eceff2;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.app-head .hmark{font-weight:1000;color:var(--navy);font-size:24px}
+.app-head .icons{font-size:22px;letter-spacing:4px;color:#303844}
+.nav{height:48px;background:#fff;border-bottom:1px solid #eceff2;display:flex;align-items:center;justify-content:space-around;font-weight:800;font-size:13px}
+.nav .active{color:var(--navy);position:relative}
+.nav .active:after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-13px;width:26px;height:3px;background:var(--navy);border-radius:99px}
+.content{height:calc(100% - 144px);overflow:auto;background:#f5f6f8;padding:15px}
+.banner{height:158px;border-radius:12px;background:linear-gradient(135deg,#27364a,#5a6879);color:#fff;padding:20px;font-size:22px;font-weight:900}
+.banner small{display:block;margin-top:10px;font-size:12px;font-weight:600;opacity:.8}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.mini{height:102px;border-radius:10px;background:#fff;border:1px solid #e4e7eb;padding:12px;font-size:13px;font-weight:800}
+.resv{background:#fff;border-radius:10px;padding:14px;border:1px solid #e4e7eb}
+.resv h4{margin:0 0 9px}
+.field{height:42px;border:1px solid #d8dde3;border-radius:7px;margin:7px 0;padding:9px;color:#727b86;background:#fff}
+.setting{background:#fff;border-radius:10px;padding:14px;border:1px solid #e4e7eb}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border-bottom:1px solid #eceff2}
 .toggle-row:last-child{border-bottom:none}
-.toggle{width:44px;height:25px;border-radius:99px;background:#c9cdd3;position:relative}
-.toggle:after{content:"";position:absolute;width:21px;height:21px;border-radius:50%;background:#fff;top:2px;left:2px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.toggle.on{background:var(--brand)}
+.toggle{width:44px;height:25px;border-radius:99px;background:#c7ccd2;position:relative;cursor:pointer}
+.toggle:after{content:"";position:absolute;width:21px;height:21px;border-radius:50%;background:#fff;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.toggle.on{background:#344a63}
 .toggle.on:after{left:21px}
-
 .push{
-  position:absolute; left:12px; right:12px; top:34px; z-index:12;
-  background:rgba(255,255,255,.97); border-radius:16px; box-shadow:0 12px 28px rgba(0,0,0,.2);
-  padding:13px 14px; border:1px solid #e8e8ec;
+  position:absolute;left:12px;right:12px;top:34px;z-index:12;
+  background:rgba(255,255,255,.98);border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.18);
+  padding:13px 14px;border:1px solid #dfe3e8;
 }
 .push.hidden{display:none}
-.push-head{display:flex;align-items:center;gap:9px;font-size:12px;color:#666;margin-bottom:6px}
-.push-icon{width:27px;height:27px;border-radius:7px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000}
-.push-title{font-weight:900;font-size:14px;color:#202124}
+.push-head{display:flex;align-items:center;gap:9px;font-size:12px;color:#69727d;margin-bottom:6px}
+.push-icon{width:27px;height:27px;border-radius:7px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:1000}
+.push-title{font-weight:900;font-size:14px;color:#20252b}
 .push-copy{font-size:13px;margin-top:3px}
-.push-actions{display:flex;gap:8px;margin-top:10px}
-.push-actions button{flex:1;border:0;border-radius:8px;padding:9px 8px;font-weight:800;cursor:pointer}
-.push-actions .open{background:#f1f2f4}
-.push-actions .reject{background:#f3edfb;color:var(--brand)}
-
-.dim{position:absolute;inset:0;background:rgba(0,0,0,.56);z-index:18;display:none}
-.modal{
-  position:absolute;left:18px;right:18px;top:50%;transform:translateY(-50%);z-index:20;background:#fff;border-radius:22px;overflow:hidden;
-  box-shadow:0 18px 48px rgba(0,0,0,.32);display:none
-}
+.push-actions{margin-top:10px}
+.push-actions button{width:100%;border:0;border-radius:7px;padding:10px 8px;font-weight:850;cursor:pointer;background:#e9edf2;color:#203147}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.52);z-index:18;display:none}
+.modal{position:absolute;left:18px;right:18px;top:50%;transform:translateY(-50%);z-index:20;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 16px 42px rgba(0,0,0,.27);display:none}
 .modal.show,.dim.show{display:block}
-.modal-body{padding:27px 26px 24px}
-.modal-title{font-size:23px;font-weight:950;margin-bottom:18px}
-.modal-copy{font-size:15px;color:#6e7278;line-height:1.7}
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e5e7eb}
+.modal-body{padding:25px 24px 22px}
+.modal-title{font-size:21px;font-weight:950;margin-bottom:15px}
+.modal-copy{font-size:14px;color:#626b76;line-height:1.65}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e4e7eb}
 .modal-actions.one{grid-template-columns:1fr}
-.modal-actions button{height:62px;border:0;background:#fff;font-weight:900;font-size:17px;cursor:pointer}
-.modal-actions button+button{border-left:1px solid #e5e7eb}
-.modal-actions .accent{color:var(--blue)}
-
-.toast{
-  position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:30;background:rgba(25,27,31,.92);color:#fff;
-  padding:11px 16px;border-radius:999px;font-size:13px;display:none;white-space:nowrap
-}
+.modal-actions button{height:58px;border:0;background:#fff;font-weight:900;font-size:16px;cursor:pointer}
+.modal-actions button+button{border-left:1px solid #e4e7eb}
+.modal-actions .accent{color:#243c57}
+.toast{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:30;background:rgba(28,33,39,.94);color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;display:none;white-space:nowrap}
 .toast.show{display:block}
-
-.log{
-  margin-top:14px;background:#16191f;color:#dfe4ec;border-radius:12px;padding:12px 13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px;min-height:116px;max-height:190px;overflow:auto
-}
-.log div{margin:3px 0}
-.k{color:#8ab4ff}.v{color:#a6e3b8}.w{color:#ffd479}
-
+.log{margin-top:13px;background:#1b222b;color:#dce2e8;border-radius:8px;padding:11px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;min-height:108px;max-height:180px;overflow:auto}
+.log div{margin:3px 0}.k{color:#a9c4e3}.v{color:#9fd0b4}.w{color:#e4c47c}
 @media(max-width:1050px){
   .layout{grid-template-columns:1fr}
   aside{position:relative;height:auto}
-  main{padding:22px 14px 55px}
+  main{padding:20px 13px 48px}
   .demo-shell,.grid2{grid-template-columns:1fr}
   .meta{grid-template-columns:1fr 1fr}
 }
@@ -205,577 +172,444 @@ select{
 <div class="layout">
 <aside>
   <div class="logo">광고성 앱푸시 수신거부</div>
-  <div class="ver">Interactive Planning Spec v1.1</div>
+  <div class="ver">Interactive Planning Spec v1.3</div>
   <a href="#s1">1. 개요</a>
-  <a href="#s2">2. 기본 정책</a>
-  <a href="#s3">3. 전체 처리 Flow</a>
-  <a href="#s4">4. 로그인 상태별 처리</a>
-  <a href="#s5">5. 앱 실행 상태별 처리</a>
-  <a href="#s6">6. 팝업 UI 정책</a>
-  <a href="#s7">7. TMS / 회원정보 연동</a>
+  <a href="#s2">2. AS-IS</a>
+  <a href="#s3">3. TO-BE</a>
+  <a href="#s4">4. 상태별 처리</a>
+  <a href="#s5">5. 앱 화면 처리</a>
+  <a href="#s6">6. 팝업 UI</a>
+  <a href="#s7">7. TMS / Braze 연동</a>
   <a href="#demo">8. Interactive Mockup</a>
-  <a href="#s8">9. 최종 정책 요약</a>
 </aside>
-
 <main>
-<div class="hero">
-  <div class="eyebrow">HANA TOUR APP / APP PUSH OPT-OUT</div>
-  <h1>광고성 앱푸시 수신거부 처리 로직</h1>
-  <p>광고성 앱푸시 내 [수신거부] 버튼 클릭부터 TMS 및 회원정보 반영, 완료 안내까지의 전체 정책 및 화면 흐름.</p>
-  <div class="meta">
-    <div><b>대상</b>하나투어 APP</div>
-    <div><b>메시지</b>광고성 앱푸시</div>
-    <div><b>대상 사용자</b>회원 / 비회원</div>
-    <div><b>연동 기준</b>기존 앱 설치 시 동의 로직</div>
-  </div>
-</div>
-
-<section id="s1">
-<h2>1. 개요</h2>
-<h3>목적</h3>
-<p>광고성 앱푸시 내 <b>[수신거부] 버튼</b>을 제공하여 로그인 여부와 관계없이 사용자가 광고성 앱푸시 수신을 철회할 수 있도록 한다.</p>
-<p>수신거부 처리 시 기기 및 회원의 광고성 앱푸시 수신동의 상태를 연동하며, <b>기존 앱 설치 시 광고성 앱푸시 동의 처리 로직과 동일한 기준</b>을 적용한다.</p>
-<h3>적용 대상</h3>
-<ul>
-  <li>하나투어 APP</li>
-  <li>광고성 앱푸시</li>
-  <li>회원 / 비회원</li>
-  <li>로그인 / 비로그인 상태 모두 포함</li>
-</ul>
-</section>
-
-<section id="s2">
-<h2>2. 기본 정책</h2>
-<table>
-<thead><tr><th>구분</th><th>정책</th></tr></thead>
-<tbody>
-<tr><td>수신거부 진입</td><td>광고성 앱푸시 내 <b>[수신거부] 버튼</b> 제공</td></tr>
-<tr><td>사용자 의사 확인</td><td>버튼 클릭 즉시 거부 처리하지 않고 <b>확인 팝업 1회 노출</b></td></tr>
-<tr><td>수신거부 확정</td><td>확인 팝업에서 [수신거부] 선택 시 TMS로 수신거부 정보 전달</td></tr>
-<tr><td>비로그인</td><td><b>기기(Device) 기준</b> 광고성 앱푸시 수신동의 N 처리</td></tr>
-<tr><td>로그인</td><td><b>기기 + 회원 기준</b> 광고성 앱푸시 수신동의 N 처리</td></tr>
-<tr><td>비로그인 → 로그인</td><td>기존 기기의 N 상태를 로그인 시 <b>회원정보에도 N으로 연동</b></td></tr>
-<tr><td>정보성 알림</td><td>광고성 앱푸시만 수신거부하며 <b>예약/결제 등 정보성 PUSH 수신에는 영향 없음</b></td></tr>
-<tr><td>연동 기준</td><td>기존 앱 설치 시 앱푸시 동의 및 로그인 연동 로직과 동일한 방식 적용</td></tr>
-</tbody>
-</table>
-<div class="note">※ TMS는 기기별 동의값을 기준으로 푸시 타깃을 제어하며, 기기 동의가 N인 경우 회원 광고성 동의가 Y이더라도 해당 기기는 발송 대상에서 제외되는 구조로 확인됨.</div>
-</section>
-
-<section id="s3">
-<h2>3. 전체 처리 Flow</h2>
-<div class="flow">
-  <div class="step">광고성 앱푸시 수신</div><div class="arrow">→</div>
-  <div class="step on">[수신거부] 클릭</div><div class="arrow">→</div>
-  <div class="step">앱 실행/활성화</div><div class="arrow">→</div>
-  <div class="step on">거부 확인 팝업</div><div class="arrow">→</div>
-  <div class="step">TMS 요청</div><div class="arrow">→</div>
-  <div class="step">로그인 여부 확인</div><div class="arrow">→</div>
-  <div class="step ok">기기/회원정보 반영</div><div class="arrow">→</div>
-  <div class="step">완료 팝업</div>
-</div>
-<h3>취소 시</h3>
-<ul>
-  <li>TMS 전송하지 않음</li>
-  <li>기기 동의값 변경하지 않음</li>
-  <li>회원 동의값 변경하지 않음</li>
-  <li>기존 화면 유지</li>
-</ul>
-</section>
-
-<section id="s4">
-<h2>4. 로그인 상태별 처리 로직</h2>
-<div class="grid2">
-<div class="card">
-<h3>4-1. 비로그인 상태</h3>
-<p><b>처리 Flow</b></p>
-<p>광고성 앱푸시 [수신거부] → 확인 팝업 → 수신거부 확정 → TMS 전달 → <b>Device 기준 광고성 앱푸시 동의 N 처리</b> → 완료 팝업</p>
-<table><tr><th>항목</th><th>결과</th></tr><tr><td>기기 광고성 앱푸시 동의</td><td>N</td></tr><tr><td>회원 광고성 앱푸시 동의</td><td>미반영</td></tr></table>
-<p class="small">비로그인 상태이므로 회원정보에는 즉시 반영하지 않고 기기정보 기준으로 수신거부 상태를 저장한다.</p>
-</div>
-<div class="card">
-<h3>4-2. 로그인 상태</h3>
-<p><b>처리 Flow</b></p>
-<p>광고성 앱푸시 [수신거부] → 확인 팝업 → 수신거부 확정 → TMS 전달 → <b>Device N</b> → <b>회원 앱푸시 동의 N 연동</b> → 완료 팝업</p>
-<table><tr><th>항목</th><th>결과</th></tr><tr><td>기기 광고성 앱푸시 동의</td><td>N</td></tr><tr><td>회원 광고성 앱푸시 동의</td><td>N</td></tr></table>
-<p class="small">마이페이지 앱푸시 설정에서도 변경된 N 상태가 확인되어야 한다.</p>
-</div>
-</div>
-<h3>4-3. 비로그인 상태에서 수신거부 후 로그인</h3>
-<p>비로그인 상태에서 수신거부 → Device 광고성 앱푸시 동의 N → 이후 동일 기기에서 로그인 → 기기정보와 회원정보 매핑 → <b>기존 Device N 상태를 회원정보에도 N으로 반영</b></p>
-<div class="note">별도 신규 정책을 생성하지 않고 <b>기존 앱 설치 후 로그인 시 기기의 앱푸시 동의상태를 회원정보에 연동하는 기존 로직과 동일하게 적용</b>한다.</div>
-</section>
-
-<section id="s5">
-<h2>5. 앱 실행 상태별 처리</h2>
-<h3>5-1. 기본 원칙</h3>
-<p>앱이 이미 실행 중인 경우 사용자가 상품 탐색, 예약, 결제 등을 진행 중일 수 있으므로 <b>광고성 앱푸시 수신거부를 위해 홈으로 강제 이동하지 않는다.</b></p>
-<p>현재 이용 중인 화면을 유지하고 <b>해당 화면 위에 공통 수신거부 확인 팝업을 노출</b>한다.</p>
-<table>
-<thead><tr><th>현재 앱 화면</th><th>처리 방식</th></tr></thead>
-<tbody>
-<tr><td>홈</td><td>현재 화면 유지 + 수신거부 팝업</td></tr>
-<tr><td>상품/콘텐츠</td><td>현재 화면 유지 + 수신거부 팝업</td></tr>
-<tr><td>예약 진행</td><td>예약 진행 상태 유지 + 수신거부 팝업</td></tr>
-<tr><td>결제 진행</td><td>결제 진행 상태 유지 + 수신거부 팝업</td></tr>
-<tr><td>마이페이지 일반 화면</td><td>현재 화면 유지 + 수신거부 팝업</td></tr>
-<tr><td>설정 &gt; 광고성 정보 수신 동의 화면</td><td><b>로그인 상태에서만 접근 가능</b><br>현재 화면 유지 + 수신거부 팝업 → 처리 후 <b>앱푸시 설정값 Refresh</b></td></tr>
-</tbody>
-</table>
-<h3>5-2. 예약/결제 진행 중</h3>
-<p><b>현재 페이지 유지 → 수신거부 팝업 노출 → 처리 완료 → 기존 페이지 그대로 유지</b></p>
-<ul><li>예약 진행 단계</li><li>사용자가 입력한 예약정보</li><li>상품 선택 상태</li><li>결제 진행 상태</li></ul>
-<h3>5-3. 설정 &gt; 광고성 정보 수신 동의 화면에서 처리 <span style="font-size:12px;color:#7d6a98;font-weight:800">(로그인 상태만)</span></h3>
-<p>해당 화면은 <b>로그인 상태에서만 접근 가능</b>하다. 비로그인 상태에서는 앱푸시 설정 화면으로 진입할 수 없다.</p><p><b>설정 화면 → 수신거부 팝업 → N 처리 → 설정 API 재조회 또는 화면 Refresh → 광고성 앱푸시 수신거부/OFF 상태 노출</b></p>
-</section>
-
-<section id="s6">
-<h2>6. 팝업 UI 정책</h2>
-<p>기존 하나투어 APP의 알림/동의 팝업 UI를 기준으로 사용한다.</p>
-<div class="grid2">
-<div class="card">
-<h3>6-1. 수신거부 확인 팝업</h3>
-<p><b>타이틀</b></p><blockquote>알림</blockquote>
-<p><b>본문</b></p>
-<blockquote>광고성 앱푸시 수신을 거부하시겠습니까?<br><br>수신거부 시 기획전, 상품할인 등<br>광고성 정보를 앱푸시로 받을 수 없습니다.</blockquote>
-<p><b>버튼</b> : 취소 | 수신거부</p>
-</div>
-<div class="card">
-<h3>6-2. 수신거부 완료 팝업</h3>
-<p><b>타이틀</b></p><blockquote>알림</blockquote>
-<p><b>본문</b></p>
-<blockquote>하나투어에서 발송하는 알림 수신여부가<br>아래와 같이 변경되었습니다.<br><br>광고성 정보 수신여부(앱푸시) : <b>수신거부</b><br><br>※ 처리 일시 : YYYY년 MM월 DD일 HH시</blockquote>
-<p><b>버튼</b> : 확인</p>
-</div>
-</div>
-</section>
-
-<section id="s7">
-<h2>7. TMS / 회원정보 연동</h2>
-<table>
-<thead><tr><th>처리 시점</th><th>TMS Device</th><th>회원정보</th><th>비고</th></tr></thead>
-<tbody>
-<tr><td>비로그인 수신거부</td><td>N</td><td>-</td><td>Device 기준 저장</td></tr>
-<tr><td>로그인 수신거부</td><td>N</td><td>N</td><td>기기 + 회원 동시 연동</td></tr>
-<tr><td>비로그인 N 후 로그인</td><td>N 유지</td><td>N</td><td>로그인 시 회원정보 연동</td></tr>
-</tbody>
-</table>
-<h3>처리 원칙</h3>
-<ul>
-<li>TMS에는 <b>광고성 메시지 수신거부 정보</b>를 전달</li>
-<li>회원 로그인 상태라면 회원의 광고성 앱푸시 동의정보까지 반영</li>
-<li>비로그인 상태에서는 Device에만 저장</li>
-<li>이후 로그인 시 Device에 저장된 상태를 회원에 연동</li>
-<li>기존 앱 설치 시 동의 로직과 동일한 구조를 사용</li>
-</ul>
-</section>
-
-<section id="demo" class="interactive-section">
-<h2>8. Interactive Mockup <span style="font-size:12px;font-weight:800;color:#6d568f;margin-left:8px;">직접 동작 확인</span></h2>
-<p>아래 목업은 정책 확인용입니다. 로그인 상태와 현재 앱 화면을 변경한 후 <b>[푸시 다시 받기]</b> → 푸시의 <b>[수신거부]</b> 버튼을 눌러 전체 흐름을 확인할 수 있습니다.</p>
-
-<div class="demo-shell">
-<div class="controls">
-  <h3 style="margin-top:0">시나리오 설정</h3>
-
-  <div class="row">
-    <label>로그인 상태</label>
-    <select id="loginState">
-      <option value="logout">비로그인</option>
-      <option value="login">로그인</option>
-    </select>
+  <div class="hero">
+    <div class="eyebrow">HANA TOUR APP / APP PUSH OPT-OUT</div>
+    <h1>광고성 앱푸시 수신거부 처리 로직</h1>
+    <div class="hero-summary">정보통신망법 개정 대응 · 로그인 여부와 관계없는 광고성 앱푸시 수신거부 처리</div>
+    <div class="meta">
+      <div><b>대상</b>하나투어 APP</div>
+      <div><b>메시지</b>광고성 앱푸시</div>
+      <div><b>사용자</b>회원 / 비회원</div>
+      <div><b>TO-BE 연동</b>TMS + Braze 동시 전송</div>
+    </div>
   </div>
 
-  <div class="row">
-    <label>현재 앱 화면</label>
-    <select id="screenState">
-      <option value="home">홈</option>
-      <option value="reservation">예약 진행</option>
-      <option value="payment">결제 진행</option>
-      <option value="settings" id="settingsOption">광고성 정보 수신 동의 설정</option>
-    </select>
-  </div>
+  <section id="s1">
+    <h2>1. 개요</h2>
+    <h3>목적</h3>
+    <ul>
+      <li>광고성 앱푸시 내 수신거부 기능 제공</li>
+      <li>로그인 절차 없이 수신거부 처리</li>
+      <li>수신거부 결과를 TMS와 Braze에 동일 시점 반영</li>
+    </ul>
+    <h3>적용 원칙</h3>
+    <ul>
+      <li>앱푸시 Y/N 변경 기존 공통 처리 로직 활용</li>
+      <li>화면별 Braze 태깅 개별 추가 없음</li>
+      <li>기존 TMS 전송 시점에 Braze 값 동시 전송</li>
+      <li>Y→N, N→Y 모두 동일 구조 적용</li>
+      <li>OS 전체 알림 권한 및 정보성 푸시 수신 여부 변경 없음</li>
+    </ul>
+    <div class="note warn"><b>Braze 태깅 상세 정의</b> · Attribute/Event 명 · 데이터 타입 · 값 규칙 · 식별키 · 테스트 조건 → 별도 태깅정의서 전달 예정</div>
+  </section>
 
-  <div class="btn-row">
-    <button class="btn primary" id="receivePush">푸시 다시 받기</button>
-    <button class="btn secondary" id="resetAll">상태 초기화</button>
-  </div>
-
-  <div class="status-box">
-    <div class="status-line"><span>Device 광고성 앱푸시</span><span id="deviceBadge" class="badge y">Y</span></div>
-    <div class="status-line"><span>회원 광고성 앱푸시</span><span id="memberBadge" class="badge na">-</span></div>
-    <div class="status-line"><span>현재 화면</span><strong id="screenLabel">홈</strong></div>
-    <div class="status-line"><span>TMS 처리</span><strong id="tmsLabel">대기</strong></div>
-  </div>
-
-  <div class="log" id="eventLog">
-    <div><span class="k">[READY]</span> 시나리오를 선택하고 푸시를 받아보세요.</div>
-  </div>
-
-  <div class="note warn" style="margin-bottom:0">
-    <b>설정 화면 시나리오:</b> 로그인 상태에서만 선택 가능하며, 수신거부 완료 시 광고성 앱푸시 토글이 OFF로 갱신됩니다.
-  </div>
-</div>
-
-<div class="phone-wrap">
-  <div class="phone" id="phone">
-    <div class="phone-top"><span>13:00</span><span>5G ▮▮▮ 100%</span></div>
-    <div class="app-head"><div class="hmark">H</div><div class="icons">⌕ ☰ ♢</div></div>
-    <div class="nav"><span>베스트</span><span>라이브</span><span class="active">홈</span><span>추천</span><span>혜택</span></div>
-    <div class="content" id="screenContent"></div>
-
-    <div class="push hidden" id="pushCard">
-      <div class="push-head"><div class="push-icon">H</div><div><div class="push-title">하나투어</div><div>지금</div></div></div>
-      <div class="push-copy"><b>가을맞이 여행 특가 ✈️</b><br>이번 주말 한정 혜택을 확인해보세요.</div>
-      <div class="push-actions">
-        <button class="open" id="openPush">내용보기</button>
-        <button class="reject" id="rejectPush">수신거부</button>
+  <section id="s2">
+    <h2>2. AS-IS</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>TMS</h3>
+        <ul>
+          <li>Device ID 기준 앱푸시 수신동의 관리</li>
+          <li>앱푸시 Y/N 변경 시 SDK/API로 즉시 전달</li>
+          <li>Device N → TMS 광고성 앱푸시 발송 제외</li>
+          <li>로그인 상태 → Device ID와 C코드 매핑 가능</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Braze</h3>
+        <ul>
+          <li>TMS 미경유 발송</li>
+          <li>Braze SDK · 프로필 · 기기정보 기반 발송</li>
+          <li>회원 동의값 → Neon → Cobalt → Braze 경로 반영</li>
+          <li>회원 동의값 약 10분 주기 반영</li>
+          <li>비로그인/로그아웃 Device N → 즉시 인지 불가</li>
+        </ul>
       </div>
     </div>
+    <h3>AS-IS 문제</h3>
+    <div class="flow">
+      <div class="step em">비로그인/로그아웃 상태</div><div class="arrow">→</div>
+      <div class="step em">앱푸시 Y→N</div><div class="arrow">→</div>
+      <div class="step ok">TMS N 반영</div><div class="arrow">→</div>
+      <div class="step">Braze 기존 상태 유지</div><div class="arrow">→</div>
+      <div class="step bad">광고성 앱푸시 재발송 가능</div>
+    </div>
+  </section>
 
-    <div class="dim" id="dim"></div>
+  <section id="s3">
+    <h2>3. TO-BE</h2>
+    <h3>개선 구조</h3>
+    <ul>
+      <li>앱푸시 Y/N 변경 공통 처리 지점 기준</li>
+      <li>TMS 전송과 동시에 Braze 값 전송</li>
+      <li>신규 수신거부 버튼 포함 기존 앱푸시 Y/N 변경 영역 동일 적용</li>
+      <li>화면별 Braze 전송 로직 중복 구현 없음</li>
+    </ul>
+    <div class="flow">
+      <div class="step em">앱푸시 Y/N 변경</div><div class="arrow">→</div>
+      <div class="step em">기존 공통 처리 로직</div><div class="arrow">→</div>
+      <div class="step ok">TMS 전송</div><div class="arrow">+</div>
+      <div class="step ok">Braze 전송</div><div class="arrow">→</div>
+      <div class="step">각 시스템 최신값 반영</div>
+    </div>
+    <h3>AS-IS / TO-BE 비교</h3>
+    <table>
+      <thead><tr><th>구분</th><th>AS-IS</th><th>TO-BE</th></tr></thead>
+      <tbody>
+        <tr><td>앱푸시 Y/N 변경</td><td>TMS 중심 전송</td><td><b>TMS + Braze 동시 전송</b></td></tr>
+        <tr><td>Braze 반영</td><td>회원정보 경로/배치 의존</td><td>앱푸시 Y/N 변경 시점 직접 전달</td></tr>
+        <tr><td>비로그인/로그아웃 N</td><td>TMS만 즉시 반영</td><td>TMS + Braze N 동시 반영</td></tr>
+        <tr><td>재동의 N→Y</td><td>시스템별 반영 시점 차이</td><td>TMS + Braze Y 동시 반영</td></tr>
+        <tr><td>개발 적용 위치</td><td>-</td><td>기존 TMS 전송 공통 처리 지점 확장</td></tr>
+      </tbody>
+    </table>
+  </section>
 
-    <div class="modal" id="confirmModal">
-      <div class="modal-body">
-        <div class="modal-title">알림</div>
-        <div class="modal-copy">
-          광고성 앱푸시 수신을<br><b style="color:#222">거부하시겠습니까?</b><br><br>
-          수신거부 시 기획전, 상품할인 등<br>
-          광고성 정보를 앱푸시로 받을 수 없습니다.
+  <section id="s4">
+    <h2>4. 상태별 처리</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>4-1. 비로그인 / 로그아웃</h3>
+        <ul>
+          <li>광고성 푸시알림 수신거부 선택</li>
+          <li>확인 팝업 → 수신거부 확정</li>
+          <li>앱푸시 N 변경</li>
+          <li>TMS N + Braze N 동시 전송</li>
+          <li>로그인 요구 없음</li>
+          <li>회원정보 즉시 변경 대상 아님</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>4-2. 로그인</h3>
+        <ul>
+          <li>광고성 푸시알림 수신거부 선택</li>
+          <li>확인 팝업 → 수신거부 확정</li>
+          <li>앱푸시 N 변경</li>
+          <li>TMS N + Braze N 동시 전송</li>
+          <li>기존 회원 동의정보 연동 로직 유지</li>
+        </ul>
+      </div>
+    </div>
+    <h3>4-3. 재동의</h3>
+    <ul>
+      <li>기존 앱 설정 등에서 앱푸시 N→Y 변경</li>
+      <li>동일 공통 처리 지점 사용</li>
+      <li>TMS Y + Braze Y 동시 전송</li>
+    </ul>
+  </section>
+
+  <section id="s5">
+    <h2>5. 앱 화면 처리</h2>
+    <table>
+      <thead><tr><th>상태</th><th>처리</th></tr></thead>
+      <tbody>
+        <tr><td>홈</td><td>현재 화면 유지 + 수신거부 확인 팝업</td></tr>
+        <tr><td>상품/콘텐츠</td><td>현재 화면 유지 + 수신거부 확인 팝업</td></tr>
+        <tr><td>예약 진행</td><td>입력/진행 상태 유지 + 수신거부 확인 팝업</td></tr>
+        <tr><td>결제 진행</td><td>결제 진행 상태 유지 + 수신거부 확인 팝업</td></tr>
+        <tr><td>설정 &gt; 광고성 정보 수신 동의</td><td>로그인 상태만 접근 · 처리 후 앱푸시 토글 최신값 Refresh</td></tr>
+      </tbody>
+    </table>
+    <div class="note">홈 강제 랜딩 없음 · 현재 이용 화면 위 공통 팝업 노출</div>
+  </section>
+
+  <section id="s6">
+    <h2>6. 팝업 UI</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>6-1. 수신거부 확인</h3>
+        <table>
+          <tr><th>타이틀</th><td>알림</td></tr>
+          <tr><th>본문</th><td>광고성 앱푸시 수신을 거부하시겠습니까?<br><br>수신거부 시 기획전, 상품할인 등 광고성 정보를 앱푸시로 받을 수 없습니다.</td></tr>
+          <tr><th>버튼</th><td>취소 | 수신거부</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>6-2. 수신거부 완료</h3>
+        <table>
+          <tr><th>타이틀</th><td>알림</td></tr>
+          <tr><th>본문</th><td>하나투어에서 발송하는 알림 수신여부가 아래와 같이 변경되었습니다.<br><br>광고성 정보 수신여부(앱푸시) : <b>수신거부</b><br><br>※ 처리 일시 : YYYY년 MM월 DD일 HH시</td></tr>
+          <tr><th>버튼</th><td>확인</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7">
+    <h2>7. TMS / Braze 연동</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>TMS</h3>
+        <table>
+          <tr><th>관리 기준</th><td>Device ID</td></tr>
+          <tr><th>Y→N</th><td>광고성 앱푸시 수신거부 N 반영</td></tr>
+          <tr><th>N→Y</th><td>광고성 앱푸시 수신동의 Y 반영</td></tr>
+          <tr><th>개발</th><td>기존 TMS 전송 로직 유지</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Braze</h3>
+        <table>
+          <tr><th>전송 시점</th><td>TMS 앱푸시 Y/N 전송과 동일 시점</td></tr>
+          <tr><th>Y→N</th><td>Braze N 전달 · 광고성 앱푸시 발송 필터 반영</td></tr>
+          <tr><th>N→Y</th><td>Braze Y 전달 · 발송 필터 최신화</td></tr>
+          <tr><th>개발</th><td>기존 공통 처리 지점에서 Braze 전송 추가</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note warn"><b>태깅정의서 별도 전달</b> · Braze Attribute/Event 명 · 데이터 타입 · 값 정의 · 식별키 · QA 조건</div>
+  </section>
+
+  <section id="demo" class="interactive-section">
+    <h2>8. Interactive Mockup</h2>
+    <ul>
+      <li>푸시 액션 버튼 1개 · <b>광고성 푸시알림 수신거부</b></li>
+      <li>수신거부 확정 시 TMS/Braze 상태 동시 변경</li>
+      <li>설정 화면 앱푸시 토글 변경 시에도 TMS/Braze 동시 전송 확인 가능</li>
+    </ul>
+
+    <div class="demo-shell" style="margin-top:16px">
+      <div class="controls">
+        <h3 style="margin-top:0">시나리오 설정</h3>
+        <div class="row">
+          <label>로그인 상태</label>
+          <select id="loginState">
+            <option value="logout">비로그인</option>
+            <option value="login">로그인</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>현재 앱 화면</label>
+          <select id="screenState">
+            <option value="home">홈</option>
+            <option value="reservation">예약 진행</option>
+            <option value="payment">결제 진행</option>
+            <option value="settings" id="settingsOption">광고성 정보 수신 동의 설정</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="receivePush">푸시 다시 받기</button>
+          <button class="btn secondary" id="resetAll">상태 초기화</button>
+        </div>
+        <div class="status-box">
+          <div class="status-line"><span>Device 광고성 앱푸시</span><span id="deviceBadge" class="badge y">Y</span></div>
+          <div class="status-line"><span>회원 광고성 앱푸시</span><span id="memberBadge" class="badge na">-</span></div>
+          <div class="status-line"><span>현재 화면</span><strong id="screenLabel">홈</strong></div>
+          <div class="status-line"><span>TMS 처리</span><strong id="tmsLabel" class="state">대기</strong></div>
+          <div class="status-line"><span>Braze 처리</span><strong id="brazeLabel" class="state">대기</strong></div>
+        </div>
+        <div class="log" id="eventLog"><div><span class="k">[READY]</span> 시나리오 선택 후 푸시를 받아보세요.</div></div>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="phone" id="phone">
+          <div class="phone-top"><span>13:00</span><span>5G ▮▮▮ 100%</span></div>
+          <div class="app-head"><div class="hmark">H</div><div class="icons">⌕ ☰ ♢</div></div>
+          <div class="nav"><span>베스트</span><span>라이브</span><span class="active">홈</span><span>추천</span><span>혜택</span></div>
+          <div class="content" id="screenContent"></div>
+
+          <div class="push hidden" id="pushCard">
+            <div class="push-head"><div class="push-icon">H</div><div><div class="push-title">하나투어</div><div>지금</div></div></div>
+            <div class="push-copy"><b>가을맞이 여행 특가 ✈️</b><br>이번 주말 한정 혜택을 확인해보세요.</div>
+            <div class="push-actions">
+              <button id="rejectPush">광고성 푸시알림 수신거부</button>
+            </div>
+          </div>
+
+          <div class="dim" id="dim"></div>
+          <div class="modal" id="confirmModal">
+            <div class="modal-body">
+              <div class="modal-title">알림</div>
+              <div class="modal-copy">광고성 앱푸시 수신을<br><b style="color:#222">거부하시겠습니까?</b><br><br>수신거부 시 기획전, 상품할인 등<br>광고성 정보를 앱푸시로 받을 수 없습니다.</div>
+            </div>
+            <div class="modal-actions"><button id="cancelOptout">취소</button><button class="accent" id="confirmOptout">수신거부</button></div>
+          </div>
+
+          <div class="modal" id="completeModal">
+            <div class="modal-body"><div class="modal-title">알림</div><div class="modal-copy" id="completeCopy"></div></div>
+            <div class="modal-actions one"><button class="accent" id="closeComplete">확인</button></div>
+          </div>
+          <div class="toast" id="toast">광고성 앱푸시 수신거부 처리 완료</div>
         </div>
       </div>
-      <div class="modal-actions">
-        <button id="cancelOptout">취소</button>
-        <button class="accent" id="confirmOptout">수신거부</button>
-      </div>
     </div>
-
-    <div class="modal" id="completeModal">
-      <div class="modal-body">
-        <div class="modal-title">알림</div>
-        <div class="modal-copy" id="completeCopy"></div>
-      </div>
-      <div class="modal-actions one">
-        <button class="accent" id="closeComplete">확인</button>
-      </div>
-    </div>
-
-    <div class="toast" id="toast">광고성 앱푸시 수신거부 처리 완료</div>
-  </div>
-</div>
-</div>
-</section>
-
-<section id="s8">
-<h2>9. 최종 정책 요약</h2>
-<p><b>광고성 앱푸시 [수신거부] 클릭 → 현재 이용 화면 유지 → 거부 확인 팝업 → 사용자가 수신거부 확정 → TMS 전달 → 비로그인 시 Device N → 로그인 시 Device N + 회원 N → 비로그인 N 이후 로그인 시 회원정보 N 연동 → 처리 완료 팝업</b></p>
-<div class="note">앱 실행 중에도 홈으로 이동하지 않고 현재 화면 위에 팝업을 노출하며, 로그인 상태에서 설정의 광고성 정보 수신 동의 화면에서 처리된 경우 앱푸시 항목을 최신 동의정보로 Refresh한다. 비로그인 상태에서는 해당 설정 화면에 접근할 수 없다.</div>
-<div class="note">기기 알림 권한 및 예약/결제 등 정보성 알림에는 영향을 주지 않고 <b>광고성 정보 수신여부(앱푸시)</b>만 수신거부 처리한다.</div>
-</section>
+  </section>
 </main>
 </div>
-
 <script>
 const $ = (id)=>document.getElementById(id);
+let deviceConsent='Y';
+let memberConsent=null;
+let tmsState='대기';
+let brazeState='대기';
 
-let deviceConsent = 'Y';
-let memberConsent = null;
-let tmsState = '대기';
+const screenNames={home:'홈',reservation:'예약 진행',payment:'결제 진행',settings:'광고성 정보 수신 동의 설정'};
 
-const screenNames = {
-  home:'홈',
-  reservation:'예약 진행',
-  payment:'결제 진행',
-  settings:'광고성 정보 수신 동의 설정'
-};
-
-function log(msg, cls='k'){
+function log(msg,cls='k'){
   const d=document.createElement('div');
   d.innerHTML=`<span class="${cls}">[${new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}]</span> ${msg}`;
   $('eventLog').appendChild(d);
   $('eventLog').scrollTop=$('eventLog').scrollHeight;
 }
-
-function badge(el, value){
-  el.textContent = value===null?'-':value;
+function badge(el,value){
+  el.textContent=value===null?'-':value;
   el.className='badge '+(value==='Y'?'y':value==='N'?'n':'na');
 }
-
 function updateStatus(){
-  badge($('deviceBadge'), deviceConsent);
-  badge($('memberBadge'), memberConsent);
+  badge($('deviceBadge'),deviceConsent);
+  badge($('memberBadge'),memberConsent);
   $('screenLabel').textContent=screenNames[$('screenState').value];
   $('tmsLabel').textContent=tmsState;
+  $('brazeLabel').textContent=brazeState;
 }
-
 function renderScreen(){
   const s=$('screenState').value;
   const c=$('screenContent');
   if(s==='home'){
-    c.innerHTML=`
-      <div class="banner">주말 특가<br>반짝 할인<small>#패키지 #항공 #호텔</small></div>
-      <div class="cards"><div class="mini">제주 렌터카<br><br>최대 30%</div><div class="mini">해외호텔<br><br>오늘만 특가</div></div>
-      <div class="cards"><div class="mini">골프</div><div class="mini">크루즈</div></div>`;
-  } else if(s==='reservation'){
-    c.innerHTML=`
-      <div class="resv">
-        <h4>예약 진행 중</h4>
-        <div class="small">상품: 오사카 자유여행 3일</div>
-        <div class="field">예약자명  홍길동</div>
-        <div class="field">휴대폰번호  010-****-1234</div>
-        <div class="field">여행자 정보 입력 중...</div>
-        <button class="btn primary" style="width:100%;margin-top:8px">다음</button>
-      </div>`;
-  } else if(s==='payment'){
-    c.innerHTML=`
-      <div class="resv">
-        <h4>결제 진행 중</h4>
-        <div class="field">결제금액 1,240,000원</div>
-        <div class="field">카드번호 **** **** **** 1234</div>
-        <div class="field">할부개월  일시불</div>
-        <button class="btn primary" style="width:100%;margin-top:8px">결제하기</button>
-      </div>`;
-  } else {
-    const promoOn = deviceConsent==='Y' ? 'on' : '';
-    c.innerHTML=`
-      <div class="setting">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
-          <span style="font-size:22px">←</span>
-          <h4 style="margin:0;font-size:20px">설정</h4>
-        </div>
-
-        <div style="padding-bottom:18px;border-bottom:8px solid #f2f3f5">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-            <div style="font-weight:900;font-size:16px">마케팅 활용 동의(선택)</div>
-            <div class="toggle"></div>
-          </div>
-        </div>
-
-        <div style="padding-top:18px">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-            <div style="font-weight:900;font-size:17px">광고성 정보 수신 동의(선택)</div>
-            <span style="font-size:11px;border:1px solid #d8dbe0;border-radius:6px;padding:3px 6px;color:#555">약관보기</span>
-          </div>
-
-          <div style="background:#f5f5f6;border-radius:12px;padding:13px 14px;color:#8b8e94;font-size:12px;line-height:1.6;margin-bottom:10px">
-            하나투어의 새로운 서비스 및 혜택 정보, 광고성 정보(기획전, 상품 할인 등) 알림을 받아 볼 수 있습니다.
-          </div>
-
-          <div class="toggle-row">
-            <span>앱푸시</span>
-            <div class="toggle ${promoOn}" id="promoToggle"></div>
-          </div>
-          <div class="toggle-row">
-            <span>문자메시지</span>
-            <div class="toggle on"></div>
-          </div>
-          <div class="toggle-row">
-            <span>이메일</span>
-            <div class="toggle"></div>
-          </div>
-          <div class="toggle-row">
-            <span>카카오톡</span>
-            <div class="toggle on"></div>
-          </div>
-        </div>
-      </div>`;
+    c.innerHTML=`<div class="banner">주말 특가<br>반짝 할인<small>#패키지 #항공 #호텔</small></div><div class="cards"><div class="mini">제주 렌터카<br><br>최대 30%</div><div class="mini">해외호텔<br><br>오늘만 특가</div></div><div class="cards"><div class="mini">골프</div><div class="mini">크루즈</div></div>`;
+  }else if(s==='reservation'){
+    c.innerHTML=`<div class="resv"><h4>예약 진행 중</h4><div class="small">상품: 오사카 자유여행 3일</div><div class="field">예약자명  홍길동</div><div class="field">휴대폰번호  010-****-1234</div><div class="field">여행자 정보 입력 중...</div><button class="btn primary" style="width:100%;margin-top:8px">다음</button></div>`;
+  }else if(s==='payment'){
+    c.innerHTML=`<div class="resv"><h4>결제 진행 중</h4><div class="field">결제금액 1,240,000원</div><div class="field">카드번호 **** **** **** 1234</div><div class="field">할부개월  일시불</div><button class="btn primary" style="width:100%;margin-top:8px">결제하기</button></div>`;
+  }else{
+    const promoOn=deviceConsent==='Y'?'on':'';
+    c.innerHTML=`<div class="setting"><div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><span style="font-size:21px">←</span><h4 style="margin:0;font-size:19px">설정</h4></div><div style="padding-top:4px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><div style="font-weight:900;font-size:16px">광고성 정보 수신 동의(선택)</div><span style="font-size:11px;border:1px solid #d8dde3;border-radius:5px;padding:3px 6px;color:#555">약관보기</span></div><div style="background:#f4f5f7;border-radius:8px;padding:11px 12px;color:#7c848e;font-size:12px;line-height:1.55;margin-bottom:9px">기획전, 상품 할인 등 광고성 정보를 앱푸시로 받아볼 수 있습니다.</div><div class="toggle-row"><span>앱푸시</span><div class="toggle ${promoOn}" id="promoToggle" title="클릭하여 Y/N 변경"></div></div><div class="toggle-row"><span>문자메시지</span><div class="toggle on"></div></div><div class="toggle-row"><span>이메일</span><div class="toggle"></div></div><div class="toggle-row"><span>카카오톡</span><div class="toggle on"></div></div></div></div>`;
+    const toggle=$('promoToggle');
+    if(toggle){toggle.addEventListener('click',()=>processConsentChange(deviceConsent==='Y'?'N':'Y','설정 화면'));}
   }
   updateStatus();
 }
-
 function setLoginState(){
-  const isLogin = $('loginState').value==='login';
-  const settingsOption = $('settingsOption');
-
-  if(settingsOption){
-    settingsOption.disabled = !isLogin;
-  }
-
+  const isLogin=$('loginState').value==='login';
+  $('settingsOption').disabled=!isLogin;
   if(isLogin){
-    memberConsent = deviceConsent;
-    log(`로그인 상태 적용 → 기존 Device 동의값(${deviceConsent})을 회원정보에 연동`, 'v');
-  } else {
-    memberConsent = null;
-
-    if($('screenState').value==='settings'){
-      $('screenState').value='home';
-      renderScreen();
-      log('비로그인 상태에서는 광고성 정보 수신 동의 설정 화면 접근 불가 → 홈 화면으로 변경', 'w');
-    }
-
-    log('비로그인 상태 적용 → 회원정보 미연동 / 설정 화면 접근 불가', 'w');
+    memberConsent=deviceConsent;
+    log(`로그인 상태 적용 → 회원 앱푸시 동의 ${memberConsent}`,'v');
+  }else{
+    memberConsent=null;
+    if($('screenState').value==='settings'){$('screenState').value='home';renderScreen();}
+    log('비로그인 상태 적용 → 회원정보 미표시','w');
   }
-
   updateStatus();
 }
-
 function showPush(){
   $('pushCard').classList.remove('hidden');
   log('광고성 앱푸시 수신');
 }
-
-function hidePush(){
-  $('pushCard').classList.add('hidden');
-}
-
+function hidePush(){$('pushCard').classList.add('hidden');}
 function showConfirm(){
   hidePush();
+  tmsState='확인 대기';
+  brazeState='확인 대기';
+  updateStatus();
   $('dim').classList.add('show');
   $('confirmModal').classList.add('show');
-  log(`수신거부 버튼 클릭 → 현재 화면(${screenNames[$('screenState').value]}) 유지`, 'v');
-  log('수신거부 확인 팝업 노출');
+  log('광고성 푸시알림 수신거부 선택 → TMS/Braze 확인 대기','v');
 }
-
 function closeAllModal(){
   $('dim').classList.remove('show');
   $('confirmModal').classList.remove('show');
   $('completeModal').classList.remove('show');
 }
-
+function processConsentChange(nextValue,source){
+  tmsState='전송 중';
+  brazeState='전송 중';
+  updateStatus();
+  log(`${source} 앱푸시 ${deviceConsent}→${nextValue} 변경 → TMS/Braze 동시 전송`,'v');
+  setTimeout(()=>{
+    deviceConsent=nextValue;
+    tmsState='완료';
+    brazeState='완료';
+    if($('loginState').value==='login') memberConsent=nextValue;
+    renderScreen();
+    updateStatus();
+    log(`TMS ${nextValue} 반영 완료 / Braze ${nextValue} 반영 완료`,'v');
+  },500);
+}
 function processOptout(){
   $('confirmModal').classList.remove('show');
   tmsState='전송 중';
+  brazeState='전송 중';
   updateStatus();
-  log('TMS 광고성 메시지 수신거부 요청 전송', 'v');
-
+  log('수신거부 확정 → TMS N + Braze N 동시 전송','v');
   setTimeout(()=>{
     deviceConsent='N';
     tmsState='완료';
-
-    if($('loginState').value==='login'){
-      memberConsent='N';
-      log('로그인 상태 → Device N + 회원 광고성 앱푸시 동의 N 반영', 'v');
-    } else {
-      memberConsent=null;
-      log('비로그인 상태 → Device N 저장, 회원정보는 미반영', 'w');
-    }
-
-    if($('screenState').value==='settings'){
-      renderScreen();
-      log('광고성 정보 수신 동의 화면 → 앱푸시 설정값 Refresh / OFF', 'v');
-    } else {
-      updateStatus();
-    }
-
+    brazeState='완료';
+    if($('loginState').value==='login') memberConsent='N'; else memberConsent=null;
+    renderScreen();
     const now=new Date();
     const dateStr=`${now.getFullYear()}년 ${String(now.getMonth()+1).padStart(2,'0')}월 ${String(now.getDate()).padStart(2,'0')}일 ${String(now.getHours()).padStart(2,'0')}시`;
-    $('completeCopy').innerHTML=
-      `하나투어에서 발송하는 알림 수신여부가<br>아래와 같이 변경되었습니다.<br><br>`+
-      `광고성 정보 수신여부(앱푸시) : <b style="color:#222">수신거부</b><br><br>`+
-      `※ 처리 일시 : ${dateStr}`;
-
+    $('completeCopy').innerHTML=`하나투어에서 발송하는 알림 수신여부가<br>아래와 같이 변경되었습니다.<br><br>광고성 정보 수신여부(앱푸시) : <b style="color:#222">수신거부</b><br><br>※ 처리 일시 : ${dateStr}`;
     $('completeModal').classList.add('show');
+    $('dim').classList.add('show');
     updateStatus();
-    log('수신거부 처리 완료 팝업 노출', 'v');
-  },700);
+    log('TMS N 완료 / Braze N 완료 → 완료 팝업 노출','v');
+  },650);
 }
 
-$('loginState').addEventListener('change', setLoginState);
-$('screenState').addEventListener('change', ()=>{
-  if($('loginState').value==='logout' && $('screenState').value==='settings'){
+$('loginState').addEventListener('change',setLoginState);
+$('screenState').addEventListener('change',()=>{
+  if($('loginState').value==='logout'&&$('screenState').value==='settings'){
     $('screenState').value='home';
-    renderScreen();
-    log('비로그인 상태에서는 광고성 정보 수신 동의 설정 화면에 접근할 수 없습니다.', 'w');
-    return;
+    log('비로그인 상태 → 설정 화면 접근 불가','w');
   }
   renderScreen();
-  log(`현재 화면 변경 → ${screenNames[$('screenState').value]}`);
 });
-$('receivePush').addEventListener('click', showPush);
-$('resetAll').addEventListener('click', ()=>{
+$('receivePush').addEventListener('click',showPush);
+$('resetAll').addEventListener('click',()=>{
   deviceConsent='Y';
   memberConsent=$('loginState').value==='login'?'Y':null;
   tmsState='대기';
-  closeAllModal(); hidePush(); renderScreen();
-  $('eventLog').innerHTML='<div><span class="k">[RESET]</span> 동의 상태를 초기화했습니다.</div>';
+  brazeState='대기';
+  closeAllModal();hidePush();renderScreen();
+  $('eventLog').innerHTML='<div><span class="k">[RESET]</span> 동의 상태 초기화</div>';
 });
-$('rejectPush').addEventListener('click', showConfirm);
-$('openPush').addEventListener('click', ()=>{hidePush(); log('내용보기 선택 → 수신거부 처리 없음');});
-$('cancelOptout').addEventListener('click', ()=>{closeAllModal(); log('수신거부 확인 팝업 [취소] → TMS 미전송 / 상태 변경 없음', 'w');});
-$('confirmOptout').addEventListener('click', processOptout);
-$('closeComplete').addEventListener('click', ()=>{
+$('rejectPush').addEventListener('click',showConfirm);
+$('cancelOptout').addEventListener('click',()=>{
+  closeAllModal();
+  tmsState='대기';
+  brazeState='대기';
+  updateStatus();
+  log('수신거부 취소 → TMS/Braze 미전송','w');
+});
+$('confirmOptout').addEventListener('click',processOptout);
+$('closeComplete').addEventListener('click',()=>{
   closeAllModal();
   $('toast').classList.add('show');
   setTimeout(()=>$('toast').classList.remove('show'),1400);
   log('완료 팝업 닫기');
 });
 
-
 renderScreen();
 updateStatus();
-if($('settingsOption')) $('settingsOption').disabled = $('loginState').value==='logout';
+$('settingsOption').disabled=true;
 
-/* Scroll Spy : 현재 스크롤 위치와 좌측 메뉴 연동 */
-const navLinks = Array.from(document.querySelectorAll('aside a[href^="#"]'));
-const navTargets = navLinks
-  .map(link => {
-    const id = link.getAttribute('href').slice(1);
-    const el = document.getElementById(id);
-    return el ? {link, el, id} : null;
-  })
-  .filter(Boolean);
-
-function setActiveNav(id){
-  navTargets.forEach(({link, id:targetId}) => {
-    link.classList.toggle('active', targetId === id);
-  });
-
-  const active = navTargets.find(x => x.id === id);
-  if(active){
-    const sidebar = document.querySelector('aside');
-    const linkTop = active.link.offsetTop;
-    const linkBottom = linkTop + active.link.offsetHeight;
-    const visibleTop = sidebar.scrollTop + 80;
-    const visibleBottom = sidebar.scrollTop + sidebar.clientHeight - 40;
-
-    if(linkTop < visibleTop){
-      sidebar.scrollTo({top: Math.max(0, linkTop - 90), behavior:'smooth'});
-    }else if(linkBottom > visibleBottom){
-      sidebar.scrollTo({top: linkBottom - sidebar.clientHeight + 60, behavior:'smooth'});
-    }
-  }
-}
-
+const navLinks=Array.from(document.querySelectorAll('aside a[href^="#"]'));
+const navTargets=navLinks.map(link=>{const id=link.getAttribute('href').slice(1);const el=document.getElementById(id);return el?{link,el,id}:null;}).filter(Boolean);
+function setActiveNav(id){navTargets.forEach(({link,id:targetId})=>link.classList.toggle('active',targetId===id));}
 function updateActiveByScroll(){
-  const offset = 150;
-  let current = navTargets[0]?.id;
-
-  for(const item of navTargets){
-    const rect = item.el.getBoundingClientRect();
-    if(rect.top <= offset){
-      current = item.id;
-    }else{
-      break;
-    }
-  }
-
-  if((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 4){
-    current = navTargets[navTargets.length - 1]?.id;
-  }
-
-  if(current) setActiveNav(current);
+  const offset=145;let current=navTargets[0]?.id;
+  for(const item of navTargets){if(item.el.getBoundingClientRect().top<=offset)current=item.id;else break;}
+  if((window.innerHeight+window.scrollY)>=document.documentElement.scrollHeight-4)current=navTargets[navTargets.length-1]?.id;
+  if(current)setActiveNav(current);
 }
-
-let scrollTick = false;
-window.addEventListener('scroll', () => {
-  if(!scrollTick){
-    window.requestAnimationFrame(() => {
-      updateActiveByScroll();
-      scrollTick = false;
-    });
-    scrollTick = true;
-  }
-}, {passive:true});
-
-window.addEventListener('load', updateActiveByScroll);
-window.addEventListener('resize', updateActiveByScroll);
-
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    const id = link.getAttribute('href').slice(1);
-    setActiveNav(id);
-  });
-});
+let scrollTick=false;
+window.addEventListener('scroll',()=>{if(!scrollTick){window.requestAnimationFrame(()=>{updateActiveByScroll();scrollTick=false;});scrollTick=true;}},{passive:true});
+window.addEventListener('load',updateActiveByScroll);
+window.addEventListener('resize',updateActiveByScroll);
+navLinks.forEach(link=>link.addEventListener('click',()=>setActiveNav(link.getAttribute('href').slice(1))));
 </script>
 </body>
 </html>
