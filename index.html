@@ -179,8 +179,7 @@ select{width:100%;padding:9px 10px;border:1px solid #cfd5dc;border-radius:7px;ba
   <a href="#s4">4. 상태별 처리</a>
   <a href="#s5">5. 앱 화면 처리</a>
   <a href="#s6">6. 팝업 UI</a>
-  <a href="#s7">7. TMS / Braze 연동</a>
-  <a href="#demo">8. 화면 상세</a>
+  <a href="#demo">7. 화면 상세</a>
 </aside>
 <main>
   <div class="hero">
@@ -299,12 +298,14 @@ select{width:100%;padding:9px 10px;border:1px solid #cfd5dc;border-radius:7px;ba
         </ul>
       </div>
     </div>
-    <h3>4-3. 재동의</h3>
-    <ul>
-      <li>기존 앱 설정 등에서 앱푸시 N→Y 변경</li>
-      <li>동일 공통 처리 지점 사용</li>
-      <li>TMS Y + Braze Y 동시 전송</li>
-    </ul>
+    <div class="card" style="margin-top:14px">
+      <h3 style="margin-top:0">4-3. 재동의</h3>
+      <ul>
+        <li>기존 앱 설정 등에서 앱푸시 N→Y 변경</li>
+        <li>동일 공통 처리 지점 사용</li>
+        <li>TMS Y + Braze Y 동시 전송</li>
+      </ul>
+    </div>
   </section>
 
   <section id="s5">
@@ -344,33 +345,8 @@ select{width:100%;padding:9px 10px;border:1px solid #cfd5dc;border-radius:7px;ba
     </div>
   </section>
 
-  <section id="s7">
-    <h2>7. TMS / Braze 연동</h2>
-    <div class="grid2">
-      <div class="card">
-        <h3>TMS</h3>
-        <table>
-          <tr><th>관리 기준</th><td>Device ID</td></tr>
-          <tr><th>Y→N</th><td>광고성 앱푸시 수신거부 N 반영</td></tr>
-          <tr><th>N→Y</th><td>광고성 앱푸시 수신동의 Y 반영</td></tr>
-          <tr><th>개발</th><td>기존 TMS 전송 로직 유지</td></tr>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Braze</h3>
-        <table>
-          <tr><th>전송 시점</th><td>TMS 앱푸시 Y/N 전송과 동일 시점</td></tr>
-          <tr><th>Y→N</th><td>Braze N 전달 · 광고성 앱푸시 발송 필터 반영</td></tr>
-          <tr><th>N→Y</th><td>Braze Y 전달 · 발송 필터 최신화</td></tr>
-          <tr><th>개발</th><td>기존 공통 처리 지점에서 Braze 전송 추가</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="note warn"><b>태깅정의서 별도 전달</b> · Braze Attribute/Event 명 · 데이터 타입 · 값 정의 · 식별키 · QA 조건</div>
-  </section>
-
   <section id="demo" class="interactive-section">
-    <h2>8. 화면 상세</h2>
+    <h2>7. 화면 상세</h2>
     <ul>
       <li>푸시 액션 버튼 1개 · <b>광고성 푸시알림 수신거부</b></li>
       <li>수신거부 확정 시 TMS/Braze 상태 동시 변경</li>
